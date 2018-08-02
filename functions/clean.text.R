@@ -1,36 +1,38 @@
 # =========================================================================
 # Name:         clean.text
-# Author:       Gaston Sanchez
+# Author:       Gaston Sanchez, modified by Christopher Penn
 # Description:  This function allows to do some text cleaning with several
 #               options such as coverting to lowercase, removing numbers,
 #               removing punctuation symbols, removing extra white spaces
-#
+# Added: removal of URLs in strings using gsub
 # License:      BSD Simplified License
 #               http://www.opensource.org/license/BSD-3-Clause
 #               Copyright (c) 2012, Gaston Sanchez
 #               All rights reserved
 # =========================================================================
 
-clean.text <- function(x, lowercase=TRUE, numbers=TRUE, punctuation=TRUE, spaces=TRUE)
+clean.text <- function(x, urls=TRUE, lowercase=TRUE, numbers=TRUE, punctuation=TRUE, spaces=TRUE)
 {
-    # x: character string
-
-    # lower case
-    if (lowercase)
-        x = tolower(x)
-    # remove numbers
-    if (numbers)
-        x = gsub("[[:digit:]]", "", x)
-    # remove punctuation symbols
-    if (punctuation)
-        x = gsub("[[:punct:]]", "", x)
-    # remove extra white spaces
-    if (spaces) {
-        x = gsub("[ \t]{2,}", " ", x)
-        x = gsub("^\\s+|\\s+$", "", x)
-    }
-    # return
-    x
+  # x: character string
+  # URLs
+  if (urls)
+    x =gsub("\\s?(f|ht)(tp)(s?)(://)([^\\.]*)[\\.|/](\\S*)", "", x)
+  # lower case
+  if (lowercase)
+    x = tolower(x)
+  # remove numbers
+  if (numbers)
+    x = gsub("[[:digit:]]", "", x)
+  # remove punctuation symbols
+  if (punctuation)
+    x = gsub("[[:punct:]]", " ", x)
+  # remove extra white spaces
+  if (spaces) {
+    x = gsub("[ \t]{2,}", " ", x)
+    x = gsub("^\\s+|\\s+$", "", x)
+  }
+  # return
+  x
 }
 
 ## Testing "clean.text" function
